@@ -9,9 +9,10 @@ async function writeTicFile(editor: vscode.TextEditor, doRun: boolean, cursorX: 
 		return;	// Abort if we're currently saving - #TODO: This might mean that the latest isn't saved!
 	}
 	isSaving = true;
+	const dirName = require('path').dirname(editor.document.fileName);
+	const filepath = dirName + path.sep + 'showdown.dat';
 
-	const filepath = __dirname + path.sep + 'showdown.dat';
-	const header = doRun ? '-- pos: 0,0\n' : `-- pos: ${cursorX},${cursorY}\n`;
+	const header = doRun ? '-- pos: 0,0\n' : `-- pos: ${cursorX + 1},${cursorY + 1}\n`;
 	const code = editor.document.getText();
 	try {
 		await fs.writeFile(filepath, header + code);

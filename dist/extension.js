@@ -34,8 +34,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.deactivate = exports.activate = void 0;
 const vscode = __importStar(__webpack_require__(1));
-const promises_1 = __importDefault(__webpack_require__(4));
-const path_1 = __importDefault(__webpack_require__(5));
+const promises_1 = __importDefault(__webpack_require__(2));
+const path_1 = __importDefault(__webpack_require__(3));
 // writeTicFile creates the showdown.dat file in TIC ByteBattle format
 let isSaving = false; // Async guard
 async function writeTicFile(editor, doRun, cursorX, cursorY) {
@@ -43,8 +43,9 @@ async function writeTicFile(editor, doRun, cursorX, cursorY) {
         return; // Abort if we're currently saving - #TODO: This might mean that the latest isn't saved!
     }
     isSaving = true;
-    const filepath = __dirname + path_1.default.sep + 'showdown.dat';
-    const header = doRun ? '-- pos: 0,0\n' : `-- pos: ${cursorX},${cursorY}\n`;
+    const dirName = (__webpack_require__(3).dirname)(editor.document.fileName);
+    const filepath = dirName + path_1.default.sep + 'showdown.dat';
+    const header = doRun ? '-- pos: 0,0\n' : `-- pos: ${cursorX + 1},${cursorY + 1}\n`;
     const code = editor.document.getText();
     try {
         await promises_1.default.writeFile(filepath, header + code);
@@ -91,15 +92,13 @@ exports.deactivate = deactivate;
 module.exports = require("vscode");
 
 /***/ }),
-/* 2 */,
-/* 3 */,
-/* 4 */
+/* 2 */
 /***/ ((module) => {
 
 module.exports = require("fs/promises");
 
 /***/ }),
-/* 5 */
+/* 3 */
 /***/ ((module) => {
 
 module.exports = require("path");
